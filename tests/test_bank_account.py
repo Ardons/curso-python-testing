@@ -48,3 +48,16 @@ class BackAccountTests(unittest.TestCase):
         mock_datetime.now.return_value.hour = 18   
         with self.assertRaises(WithdramalTimeRestrictionError):
             new_balance = self.account.witdraw(100)
+            
+    def test_desposit_varios_ammpunts(self):
+        test_cases = [
+            {"ammount": 100, "expected": 1100},
+            {"ammount": 3000, "expected": 4000},
+            {"ammount": 4500, "expected": 5500}
+        ]
+        
+        for case in test_cases:            
+           with self.subTest(case=case):
+               self.account = BankAccount(balance=1000, log_file="transaction_log.txt")
+               new_balance = self.account.deposit(case["ammount"])
+               self.assertEqual(new_balance, case["expected"])
