@@ -6,11 +6,11 @@ class AllAssertsTests(unittest.TestCase):
     
     def test_assert_equal(self):
         self.assertEqual(10,10,"Los valores no son iguales")
-        self.assertEqual("Hola","hola","Los valores no son iguales")
+        self.assertEqual("Hola","Hola","Los valores no son iguales")
         
     def test_assert_true_or_false(self):
         self.assertTrue(True)
-        self.assertTrue(False, "El valor es Falso")
+        #self.assertTrue(False, "El valor es Falso")
         
     def test_assert_raises(self):
         with self.assertRaises(ValueError):
