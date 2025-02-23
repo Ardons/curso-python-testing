@@ -1,5 +1,8 @@
 import unittest, os
 from src.bank_account import BankAccount
+from src.exceptions import InsufficientFundsError, WithdramalTimeRestrictionError
+from unittest.mock import patch
+
 
 class BackAccountTests(unittest.TestCase):
     
@@ -33,3 +36,15 @@ class BackAccountTests(unittest.TestCase):
         assert self._count_lines(self.account.log_file) == 1
         self.account.deposit(500)
         assert self._count_lines(self.account.log_file) == 2
+    
+    @patch("src.bank_account.datetime")
+    def test_withdraw_during_bussines_hours(self, mock_datetime):
+        mock_datetime.now.return_value.hour = 8    
+        new_balance = self.account.witdraw(100)
+        self.assertEqual(new_balance, 900)
+        
+    @patch("src.bank_account.datetime")
+    def test_withdraw_raises_during_bussines_hours(self, mock_datetime):
+        mock_datetime.now.return_value.hour = 18   
+        with self.assertRaises(WithdramalTimeRestrictionError):
+            new_balance = self.account.witdraw(100)
